@@ -19,6 +19,7 @@ namespace PaintStoreManagerCatMan.Forms
         readonly string connstring = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database\PaintStoreDB.mdf;Integrated Security=True;Connect Timeout=30";
 
         public static string sellerName = "";
+
         public FmLogin()
         {
             InitializeComponent();

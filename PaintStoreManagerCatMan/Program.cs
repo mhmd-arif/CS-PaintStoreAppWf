@@ -16,7 +16,7 @@ namespace PaintStoreManagerCatMan
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FmMainAdmin());
+            Application.Run(new FmLogin());
             //SELECT TOP 1 * FROM Customers ORDER BY CustomerID DESC;
         }
     }

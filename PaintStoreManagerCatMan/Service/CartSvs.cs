@@ -40,14 +40,17 @@ namespace PaintStoreManagerCatMan.Service
                     ListCart.Add(newCart);
                 }
 
-                return ListCart;
                 con.Close();
+
+                return ListCart;
+
             }
             catch (Exception)
             {
                 throw;
             }
             
+
         }
         public void Add(string nama, string color, string ctg, string size, double sp)
         {
@@ -136,6 +139,7 @@ namespace PaintStoreManagerCatMan.Service
                 {
                     totalCost = totalCost + (double)dr["SellPrice"];
                 }
+
                 con.Close();
 
                 return totalCost;

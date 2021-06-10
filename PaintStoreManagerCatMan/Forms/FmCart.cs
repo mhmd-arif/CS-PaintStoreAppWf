@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PaintStoreManagerCatMan.Entity;
 using PaintStoreManagerCatMan.Service;
+using PaintStoreManagerCatMan.Forms;
 using System.Data.SqlClient;
 
 namespace PaintStoreManagerCatMan.Forms
@@ -55,7 +56,7 @@ namespace PaintStoreManagerCatMan.Forms
                         else
                         {
                             string date = DateTime.Now.ToString();
-                            newReport.Add(TB_CustomerName.Text, "CASHIER", buyerMoney, totalCost, change, date);
+                            newReport.Add(TB_CustomerName.Text, FmLogin.sellerName.ToString(), buyerMoney, totalCost, change, date);
                             MessageBox.Show("Transaction Success");
                         }
 
