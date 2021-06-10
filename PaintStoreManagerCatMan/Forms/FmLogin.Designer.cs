@@ -46,7 +46,7 @@ namespace PaintStoreManagerCatMan.Forms
             this.Btn_Login = new Bunifu.Framework.UI.BunifuThinButton2();
             this.guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.CB_Role = new System.Windows.Forms.ComboBox();
-            this.bunifuThinButton21 = new Bunifu.Framework.UI.BunifuThinButton2();
+            this.Btn_Clear = new Bunifu.Framework.UI.BunifuThinButton2();
             this.guna2HtmlLabel4 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2HtmlLabel5 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2HtmlLabel6 = new Guna.UI2.WinForms.Guna2HtmlLabel();
@@ -289,32 +289,33 @@ namespace PaintStoreManagerCatMan.Forms
             this.CB_Role.Size = new System.Drawing.Size(211, 25);
             this.CB_Role.TabIndex = 9;
             this.CB_Role.Text = "Select a Role";
+            this.CB_Role.SelectedIndexChanged += new System.EventHandler(this.CB_Role_SelectedIndexChanged);
             // 
-            // bunifuThinButton21
+            // Btn_Clear
             // 
-            this.bunifuThinButton21.ActiveBorderThickness = 1;
-            this.bunifuThinButton21.ActiveCornerRadius = 20;
-            this.bunifuThinButton21.ActiveFillColor = System.Drawing.Color.Red;
-            this.bunifuThinButton21.ActiveForecolor = System.Drawing.Color.White;
-            this.bunifuThinButton21.ActiveLineColor = System.Drawing.SystemColors.Control;
-            this.bunifuThinButton21.BackColor = System.Drawing.SystemColors.Control;
-            this.bunifuThinButton21.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bunifuThinButton21.BackgroundImage")));
-            this.bunifuThinButton21.ButtonText = "Clear";
-            this.bunifuThinButton21.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.bunifuThinButton21.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bunifuThinButton21.ForeColor = System.Drawing.Color.SeaGreen;
-            this.bunifuThinButton21.IdleBorderThickness = 1;
-            this.bunifuThinButton21.IdleCornerRadius = 20;
-            this.bunifuThinButton21.IdleFillColor = System.Drawing.SystemColors.Control;
-            this.bunifuThinButton21.IdleForecolor = System.Drawing.Color.DarkOrange;
-            this.bunifuThinButton21.IdleLineColor = System.Drawing.SystemColors.Control;
-            this.bunifuThinButton21.Location = new System.Drawing.Point(367, 299);
-            this.bunifuThinButton21.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.bunifuThinButton21.Name = "bunifuThinButton21";
-            this.bunifuThinButton21.Size = new System.Drawing.Size(91, 40);
-            this.bunifuThinButton21.TabIndex = 10;
-            this.bunifuThinButton21.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.bunifuThinButton21.Click += new System.EventHandler(this.bunifuThinButton21_Click);
+            this.Btn_Clear.ActiveBorderThickness = 1;
+            this.Btn_Clear.ActiveCornerRadius = 20;
+            this.Btn_Clear.ActiveFillColor = System.Drawing.Color.Red;
+            this.Btn_Clear.ActiveForecolor = System.Drawing.Color.White;
+            this.Btn_Clear.ActiveLineColor = System.Drawing.SystemColors.Control;
+            this.Btn_Clear.BackColor = System.Drawing.SystemColors.Control;
+            this.Btn_Clear.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Btn_Clear.BackgroundImage")));
+            this.Btn_Clear.ButtonText = "Clear";
+            this.Btn_Clear.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.Btn_Clear.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Btn_Clear.ForeColor = System.Drawing.Color.SeaGreen;
+            this.Btn_Clear.IdleBorderThickness = 1;
+            this.Btn_Clear.IdleCornerRadius = 20;
+            this.Btn_Clear.IdleFillColor = System.Drawing.SystemColors.Control;
+            this.Btn_Clear.IdleForecolor = System.Drawing.Color.DarkOrange;
+            this.Btn_Clear.IdleLineColor = System.Drawing.SystemColors.Control;
+            this.Btn_Clear.Location = new System.Drawing.Point(367, 299);
+            this.Btn_Clear.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Btn_Clear.Name = "Btn_Clear";
+            this.Btn_Clear.Size = new System.Drawing.Size(91, 40);
+            this.Btn_Clear.TabIndex = 10;
+            this.Btn_Clear.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.Btn_Clear.Click += new System.EventHandler(this.Btn_Clear_Click);
             // 
             // guna2HtmlLabel4
             // 
@@ -357,7 +358,7 @@ namespace PaintStoreManagerCatMan.Forms
             this.Controls.Add(this.guna2HtmlLabel6);
             this.Controls.Add(this.guna2HtmlLabel5);
             this.Controls.Add(this.guna2HtmlLabel4);
-            this.Controls.Add(this.bunifuThinButton21);
+            this.Controls.Add(this.Btn_Clear);
             this.Controls.Add(this.CB_Role);
             this.Controls.Add(this.guna2HtmlLabel3);
             this.Controls.Add(this.Btn_Login);
@@ -370,6 +371,7 @@ namespace PaintStoreManagerCatMan.Forms
             this.Name = "FmLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login Page";
+            this.Load += new System.EventHandler(this.FmLogin_Load);
             ((System.ComponentModel.ISupportInitialize)(this.guna2CirclePictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -386,7 +388,7 @@ namespace PaintStoreManagerCatMan.Forms
         private Bunifu.Framework.UI.BunifuThinButton2 Btn_Login;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel3;
         private System.Windows.Forms.ComboBox CB_Role;
-        private Bunifu.Framework.UI.BunifuThinButton2 bunifuThinButton21;
+        private Bunifu.Framework.UI.BunifuThinButton2 Btn_Clear;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel4;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel5;
         private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel6;

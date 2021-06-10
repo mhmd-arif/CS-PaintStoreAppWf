@@ -65,7 +65,6 @@ namespace PaintStoreManagerCatMan.Service
             con.Close();
         }
 
-       
 
         public void Update(int id, string name, string username, string pass, string level)
         {
@@ -84,5 +83,7 @@ namespace PaintStoreManagerCatMan.Service
 
             con.Close();
         }
+
+
     }
 }

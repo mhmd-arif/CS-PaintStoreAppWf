@@ -19,6 +19,8 @@ namespace PaintStoreManagerCatMan.Forms
     public partial class FmLogin : Form
     {
         readonly string connstring = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database\PaintStoreDB.mdf;Integrated Security=True;Connect Timeout=30";
+
+        public static string sellerName = "";
         public FmLogin()
         {
             InitializeComponent();
@@ -29,36 +31,55 @@ namespace PaintStoreManagerCatMan.Forms
             if (TB_Username.Text == "" || TB_Password.Text == "")
             {
                 MessageBox.Show("Enter The Username and Password");
+
             }
             else
             {
                 if(CB_Role.SelectedIndex > -1)
                 {
-                    if(CB_Role.SelectedItem.ToString() == "ADMIN")
+                    SqlConnection con = new SqlConnection(connstring);
+                    string sql = "SELECT COUNT(*) FROM TblUsers WHERE Username = '"+TB_Username.Text+ "' AND Password = '" + TB_Password.Text + "' AND Level = '" + CB_Role.SelectedItem.ToString() + "'";
+
+                    con.Open();
+                    SqlDataAdapter sda = new SqlDataAdapter(sql, con);
+                    DataTable dt = new DataTable();
+                    sda.Fill(dt);
+
+                    if (CB_Role.SelectedItem.ToString() == "ADMIN")
                     {
-                        if (TB_Username.Text == "ADMIN" && TB_Password.Text == "ADMIN" )
+                        if (dt.Rows[0][0].ToString() == "1")
                         {
+                            sellerName = TB_Username.Text;
                             FmMainAdmin mainAdminFm = new FmMainAdmin();
                             mainAdminFm.Show();
                             this.Hide();
+                            con.Close();
                         }
+                        
                         else
                         {
                             MessageBox.Show("Incorect Username or Password");
                         }
                     }
-                    else if(CB_Role.SelectedItem.ToString() == "CASHIER")
+                    else if (CB_Role.SelectedItem.ToString() == "CASHIER")
                     {
-                        if (TB_Username.Text == "CASHIER" && TB_Password.Text == "CASHIER")
+                        if (dt.Rows[0][0].ToString() == "1")
                         {
+                            sellerName = TB_Username.Text;
                             FmMainCashier mainCashierFm = new FmMainCashier();
                             mainCashierFm.Show();
                             this.Hide();
+                            con.Close();
                         }
+                        
                         else
                         {
                             MessageBox.Show("Incorect Username or Password");
                         }
+                    }
+                    else
+                    {
+                        con.Close();
                     }
                 }
                 else
@@ -68,30 +89,22 @@ namespace PaintStoreManagerCatMan.Forms
             }
         }
 
-        private void bunifuThinButton21_Click(object sender, EventArgs e)
+       
+
+        private void CB_Role_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FmLogin_Load(object sender, EventArgs e)
+        {
+        }
+
+        private void Btn_Clear_Click(object sender, EventArgs e)
         {
             TB_Username.Clear();
             TB_Password.Clear();
             CB_Role.SelectedItem = "Select a Role";
-        }
-
-        private void FillCombo()
-        {
-            SqlConnection con = new SqlConnection(connstring);
-            string sql = "SELECT Username, Id FROM TblUsers";
-
-            con.Open();
-
-            SqlCommand cmd = new SqlCommand(sql, con);
-            SqlDataReader dr;
-            dr = cmd.ExecuteReader();
-            while (dr.Read())
-            {
-                CB_Role.Items.Add(dr["Username"].ToString());
-                CB_Role.DisplayMember = dr["Username"].ToString();
-                CB_Role.ValueMember = dr["Id"].ToString();
-            }
-            con.Close();
         }
     }
 }

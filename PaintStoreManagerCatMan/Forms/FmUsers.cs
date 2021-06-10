@@ -24,13 +24,14 @@ namespace PaintStoreManagerCatMan.Forms
 
         private void Btn_Add_Click(object sender, EventArgs e)
         {
-            if (TB_Name.Text != "" || Tb_Usernm.Text != "" || TB_Password.Text != ""  || CB_Level.SelectedIndex > -1)
+            
+            if (TB_Name.ToString() == "" || Tb_Usernm.ToString() == "" || TB_Password.ToString() == ""  || CB_Level.SelectedIndex < 0)
             {
-                newItems.Add(TB_Name.Text, Tb_Usernm.Text, TB_Password.Text,CB_Level.Text);
+                MessageBox.Show("Missing Information");
             }
             else
             {
-                MessageBox.Show("Missing Information");
+                newItems.Add(TB_Name.Text, Tb_Usernm.Text, TB_Password.Text, CB_Level.Text);
             }
 
             UpdateDgv();
@@ -41,16 +42,15 @@ namespace PaintStoreManagerCatMan.Forms
         {
             int id = GetId();
 
-            if (TB_Name.Text != "" || Tb_Usernm.Text != "" || TB_Password.Text != "" || CB_Level.SelectedIndex > -1)
-            {
-                newItems.Update(id,TB_Name.Text, Tb_Usernm.Text, TB_Password.Text, CB_Level.Text);
-            }
-            else
+            if (TB_Name.ToString() == "" || Tb_Usernm.ToString() == "" || TB_Password.ToString() == "" || CB_Level.SelectedIndex < 0)
             {
                 MessageBox.Show("Missing Information");
             }
+            else
+            {
+                newItems.Update(id, TB_Name.Text, Tb_Usernm.Text, TB_Password.Text, CB_Level.Text);
+            }
             
-
             UpdateDgv();
             ClearAll();
         }
