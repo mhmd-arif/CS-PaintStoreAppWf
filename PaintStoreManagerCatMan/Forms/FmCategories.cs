@@ -26,17 +26,16 @@ namespace PaintStoreManagerCatMan.Forms
 
         private void Btn_Add_Click(object sender, EventArgs e)
         {
-            if (TB_Category.Text != "")
-            {
-                newCategory.Add(TB_Category.Text, TB_CateDesc.Text);
-            }
-            else
+            if (TB_Category.ToString() == "")
             {
                 MessageBox.Show("Missing Information");
             }
-            UpdateDgv();
-            ClearAll();
+            else
+            {
+                newCategory.Add(TB_Category.Text, TB_CateDesc.Text);
+            }
 
+            UpdateDgv();
         }
 
         private void Btn_Delete_Click(object sender, EventArgs e)
@@ -45,21 +44,27 @@ namespace PaintStoreManagerCatMan.Forms
             newCategory.Delete(id);
 
             UpdateDgv();
-            ClearAll();
+            
         }
 
         private void Btn_Update_Click(object sender, EventArgs e)
         {
             int id = GetId();
-            newCategory.Update(id, TB_Category.Text, TB_CateDesc.Text);
+            if (TB_Category.ToString() == "")
+            {
+                MessageBox.Show("Missing Information");
+            }
+            else
+            {
+                newCategory.Update(id, TB_Category.Text, TB_CateDesc.Text);
+            }
 
             UpdateDgv();
-            ClearAll();
         }
 
         private void Btn_Clear_Click(object sender, EventArgs e)
         {
-            ClearAll();
+            UpdateDgv();
         }
 
         private int GetId()
@@ -75,11 +80,12 @@ namespace PaintStoreManagerCatMan.Forms
         {
             List<Category> dgvCate = newCategory.GetAllCategories();
             DGV_Cate.DataSource = dgvCate;
+
+            ClearAll();
         }
 
         private void FmCategories_Load(object sender, EventArgs e)
         {
-            ClearAll();
             UpdateDgv();
         }
 

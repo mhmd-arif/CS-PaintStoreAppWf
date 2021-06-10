@@ -33,34 +33,32 @@ namespace PaintStoreManagerCatMan.Forms
             double buyerMoney = double.Parse(Tb_CustomerCash.Text);
             double totalCost = double.Parse(Lbl_Total.Text);
             double change = buyerMoney - totalCost;
-
-            if (BuyerMoney < 0)
+            if (TB_CustomerName.ToString() == "" || Tb_CustomerCash.ToString() == "" )
             {
-                MessageBox.Show("input incorrect, please try again");
+                MessageBox.Show("Missing Information, please fill required data");
             }
             else
             {
-                if (buyerMoney < totalCost)
+                if (BuyerMoney < 0)
                 {
-                    MessageBox.Show("Not Enough Money !, please try again");
+                    MessageBox.Show("input incorrect, please try again");
                 }
                 else
                 {
-                    string date = DateTime.Now.ToString();
-                    newReport.Add(TB_CustomerName.Text, "CASHIER", buyerMoney,totalCost, change, date);
-                    MessageBox.Show("Transaction Success");
-                }
+                    if (buyerMoney < totalCost)
+                    {
+                        MessageBox.Show("Not Enough Money !, please try again");
+                    }
+                    else
+                    {
+                        string date = DateTime.Now.ToString();
+                        newReport.Add(TB_CustomerName.Text, "CASHIER", buyerMoney, totalCost, change, date);
+                        MessageBox.Show("Transaction Success");
+                    }
 
+                }
             }
-/*
-            try
-            {
-                
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("incorrect input");
-            }*/
+            UpdateDgv();
         }
 
         private void Btn_AddCart_Click(object sender, EventArgs e)
@@ -120,7 +118,6 @@ namespace PaintStoreManagerCatMan.Forms
         private void FmCart_Load(object sender, EventArgs e)
         {
             UpdateDgv();
-            FillCombo();
         }
         
         private void ClearAll()
@@ -140,6 +137,9 @@ namespace PaintStoreManagerCatMan.Forms
             DGV_Cart.DataSource = dgvCart;
 
             Lbl_Total.Text = totalTrans.ToString();
+
+            ClearAll();
+            FillCombo();
 
         }
 
@@ -210,6 +210,7 @@ namespace PaintStoreManagerCatMan.Forms
 
         private void TB_SearchByBrand_TextChange(object sender, EventArgs e)
         {
+            TB_SearchByColor.Clear();
             if (TB_SearchByBrand.Text == "")
             {
                 UpdateDgv();
@@ -233,6 +234,7 @@ namespace PaintStoreManagerCatMan.Forms
 
         private void TB_SearchByColor_TextChange(object sender, EventArgs e)
         {
+            TB_SearchByBrand.Clear();
             if (TB_SearchByColor.Text == "")
             {
                 UpdateDgv();

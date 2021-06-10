@@ -30,35 +30,34 @@ namespace PaintStoreManagerCatMan.Forms
 
         private void Btn_Add_Click(object sender, EventArgs e)
         {
-            if (TB_Brand.Text != "" || Tb_Color.Text != ""|| TB_Size.Text != "" || TB_Quantity.Text != "" || TB_BuyPrice.Text != "" || TB_SellPrice.Text != "" || CB_CatePaint.SelectedIndex > -1)
+            if (TB_Brand.ToString() == "" || Tb_Color.ToString() == ""|| TB_Size.ToString() == "" || TB_Quantity.ToString() == "" || TB_BuyPrice.ToString() == "" || TB_SellPrice.ToString() == "" || CB_CatePaint.SelectedIndex < 0)
             {
-                newItems.Add(CB_CatePaint.Text, TB_Brand.Text,Tb_Color.Text,TB_Size.Text, int.Parse(TB_Quantity.Text) , double.Parse(TB_BuyPrice.Text), double.Parse(TB_SellPrice.Text));
+                newItems.Add(CB_CatePaint.Text, TB_Brand.Text, Tb_Color.Text, TB_Size.Text, int.Parse(TB_Quantity.Text), double.Parse(TB_BuyPrice.Text), double.Parse(TB_SellPrice.Text));
             }
             else
             {
-                MessageBox.Show("Missing Information");
+                newItems.Add(CB_CatePaint.Text, TB_Brand.Text, Tb_Color.Text, TB_Size.Text, int.Parse(TB_Quantity.Text), double.Parse(TB_BuyPrice.Text), double.Parse(TB_SellPrice.Text));
             }
 
             UpdateDgv();
-            ClearAll();
         }
 
         private void Btn_Update_Click(object sender, EventArgs e)
         {
             int id = GetId();
 
-            if (TB_Brand.Text != "" || Tb_Color.Text != "" || TB_Size.Text != "" || TB_Quantity.Text != "" || TB_BuyPrice.Text != "" || TB_SellPrice.Text != "" || CB_CatePaint.SelectedIndex > -1)
-            {
-                newItems.Update(id, TB_Brand.Text, Tb_Color.Text, CB_CatePaint.Text, TB_Size.Text, int.Parse(TB_Quantity.Text), double.Parse(TB_BuyPrice.Text), double.Parse(TB_SellPrice.Text));
-            }
-            else
+            if (TB_Brand.ToString() == "" || Tb_Color.ToString() == "" || TB_Size.ToString() == "" || TB_Quantity.ToString() == "" || TB_BuyPrice.ToString() == "" || TB_SellPrice.ToString() == "" || CB_CatePaint.SelectedIndex < 0)
             {
                 MessageBox.Show("Missing Information");
             }
 
+            else
+            {
+                newItems.Update(id, TB_Brand.Text, Tb_Color.Text, CB_CatePaint.Text, TB_Size.Text, int.Parse(TB_Quantity.Text), double.Parse(TB_BuyPrice.Text), double.Parse(TB_SellPrice.Text));
+                
+            }
 
             UpdateDgv();
-            ClearAll();
         }
 
         private void Btn_Delete_Click(object sender, EventArgs e)
@@ -67,7 +66,6 @@ namespace PaintStoreManagerCatMan.Forms
             newItems.Delete(id);
 
             UpdateDgv();
-            ClearAll();
         }
 
         private void Btn_Clear_Click(object sender, EventArgs e)
@@ -92,8 +90,10 @@ namespace PaintStoreManagerCatMan.Forms
         public void UpdateDgv()
         {
             ClearAll();
+
             List<Paints> dgv = newItems.GetAllPaints();
             DGV_Paint.DataSource = dgv;
+            FillCombo();
         }
         private void FillCombo()
         {
