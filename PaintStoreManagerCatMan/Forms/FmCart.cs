@@ -57,6 +57,9 @@ namespace PaintStoreManagerCatMan.Forms
                         {
                             string date = DateTime.Now.ToString();
                             newReport.Add(TB_CustomerName.Text, FmLogin.sellerName.ToString(), buyerMoney, totalCost, change, date);
+
+                            AutoDeleteCart();
+
                             MessageBox.Show("Transaction Success");
                         }
 
@@ -147,6 +150,7 @@ namespace PaintStoreManagerCatMan.Forms
         private void FmCart_Load(object sender, EventArgs e)
         {
             UpdateDgv();
+            AutoDeleteCart();
         }
         
         private void ClearAll()
@@ -235,7 +239,6 @@ namespace PaintStoreManagerCatMan.Forms
         private void Btn_DeleteCart_Click(object sender, EventArgs e)
         { 
             int id = int.Parse(DGV_Cart.CurrentRow.Cells[0].Value.ToString());
-
             newCart.Delete(id);
 
             double total = double.Parse(DGV_Cart.CurrentRow.Cells[5].Value.ToString());
@@ -317,6 +320,23 @@ namespace PaintStoreManagerCatMan.Forms
         private void Tb_CustomerCash_TextChange(object sender, EventArgs e)
         {
             
+        }
+
+        private void AutoDeleteCart()
+        {
+            int rowCount =  int.Parse(DGV_Cart.RowCount.ToString());
+            for (int i = 0; i < rowCount; i++)
+            {
+                int id = int.Parse(DGV_Cart.CurrentRow.Cells[0].Value.ToString());
+                newCart.Delete(id);
+
+                double total = double.Parse(DGV_Cart.CurrentRow.Cells[5].Value.ToString());
+                totalTrans = totalTrans - total;
+                UpdateDgv();
+
+                totalTrans = 0;
+                Lbl_Total.Text = "0";
+            }
         }
     }
 }
