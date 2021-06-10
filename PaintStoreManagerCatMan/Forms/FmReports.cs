@@ -15,7 +15,6 @@ namespace PaintStoreManagerCatMan.Forms
 {
     public partial class FmReports : Form
     {
-        readonly string connstring = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Database\PaintStoreDB.mdf;Integrated Security=True;Connect Timeout=30";
         readonly private ReportsSvs newreport = new ReportsSvs();
         public FmReports()
         {

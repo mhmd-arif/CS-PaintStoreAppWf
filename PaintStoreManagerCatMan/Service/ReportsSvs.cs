@@ -25,9 +25,18 @@ namespace PaintStoreManagerCatMan.Service
             cmd.Parameters.AddWithValue("@Change", change);
             cmd.Parameters.AddWithValue("@date", date);
 
-            con.Open();
-            cmd.ExecuteNonQuery();
-            con.Close();
+            try
+            {
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         public List<Reports> GetAllReports()
@@ -36,27 +45,36 @@ namespace PaintStoreManagerCatMan.Service
 
             SqlConnection con = new SqlConnection(connstring);
             string sql = "SELECT * FROM TblReports";
-
-            con.Open();
-
-            SqlCommand cmd = new SqlCommand(sql, con);
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            try
             {
-                Reports newreports= new Reports();
+                con.Open();
 
-                newreports.Id = (int)dr["Id"];
-                newreports.Customer = dr["Customer"].ToString();
-                newreports.Cashier = dr["Cashier"].ToString();
-                newreports.Cash = (double)dr["Cash"];
-                newreports.Transaction = (double)dr["Transaction"];
-                newreports.Change = (double)dr["Change"];
-                newreports.Date = dr["date"].ToString();
+                SqlCommand cmd = new SqlCommand(sql, con);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    Reports newreports = new Reports();
 
-                Listreports.Add(newreports);
+                    newreports.Id = (int)dr["Id"];
+                    newreports.Customer = dr["Customer"].ToString();
+                    newreports.Cashier = dr["Cashier"].ToString();
+                    newreports.Cash = (double)dr["Cash"];
+                    newreports.Transaction = (double)dr["Transaction"];
+                    newreports.Change = (double)dr["Change"];
+                    newreports.Date = dr["date"].ToString();
+
+                    Listreports.Add(newreports);
+                }
+
+                return Listreports;
+                con.Close();
             }
+            catch (Exception)
+            {
 
-            return Listreports;
+                throw;
+            }
+            
         }
     }
 }

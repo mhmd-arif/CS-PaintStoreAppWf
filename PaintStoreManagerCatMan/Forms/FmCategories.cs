@@ -26,7 +26,7 @@ namespace PaintStoreManagerCatMan.Forms
 
         private void Btn_Add_Click(object sender, EventArgs e)
         {
-            if (TB_Category.ToString() == "")
+            if (TB_Category.Text == "")
             {
                 MessageBox.Show("Missing Information");
             }
@@ -50,7 +50,7 @@ namespace PaintStoreManagerCatMan.Forms
         private void Btn_Update_Click(object sender, EventArgs e)
         {
             int id = GetId();
-            if (TB_Category.ToString() == "")
+            if (TB_Category.Text == "")
             {
                 MessageBox.Show("Missing Information");
             }
@@ -105,15 +105,23 @@ namespace PaintStoreManagerCatMan.Forms
             {
                 SqlConnection con = new SqlConnection(connstring);
                 string sqlQuery = "SELECT * FROM TblCategories where CateName = '" + TB_SearchCate.Text + "' ";
+                try
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
 
-                con.Open();
-                SqlCommand cmd = new SqlCommand(sqlQuery, con);
-                SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
+                    sda.Fill(dt);
+                    DGV_Cate.DataSource = dt;
+                    con.Close();
+                }
+                catch (Exception)
+                {
 
-                sda.Fill(dt);
-                DGV_Cate.DataSource = dt;
-                con.Close();
+                    MessageBox.Show("Connection to database failed");
+                }
+                
             }
         }
     }

@@ -25,7 +25,7 @@ namespace PaintStoreManagerCatMan.Forms
         private void Btn_Add_Click(object sender, EventArgs e)
         {
             
-            if (TB_Name.ToString() == "" || Tb_Usernm.ToString() == "" || TB_Password.ToString() == "" || CB_Level.SelectedIndex < 0)
+            if (TB_Name.Text == "" || Tb_Usernm.Text == "" || TB_Password.Text == "" || CB_Level.SelectedIndex < 0)
             {
                 MessageBox.Show("Missing Information");
             }
@@ -43,7 +43,7 @@ namespace PaintStoreManagerCatMan.Forms
         {
             int id = GetId();
 
-            if (TB_Name.ToString() == "" || Tb_Usernm.ToString() == "" || TB_Password.ToString() == "" || CB_Level.SelectedIndex < 0)
+            if (TB_Name.Text == "" || Tb_Usernm.Text == "" || TB_Password.Text == "" || CB_Level.SelectedIndex < 0)
             {
                 MessageBox.Show("Missing Information");
             }
@@ -112,14 +112,23 @@ namespace PaintStoreManagerCatMan.Forms
                 SqlConnection con = new SqlConnection(connstring);
                 string sqlQuery = "SELECT * FROM TblUsers where User = '" + TB_SearchUser.Text + "' ";
 
-                con.Open();
-                SqlCommand cmd = new SqlCommand(sqlQuery, con);
-                SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
+                try
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
 
-                sda.Fill(dt);
-                DGV_Users.DataSource = dt;
-                con.Close();
+                    sda.Fill(dt);
+                    DGV_Users.DataSource = dt;
+                    con.Close();
+                }
+                catch (Exception)
+                {
+
+                    MessageBox.Show("Connection to database failed");
+                }
+                
             }
             
         }

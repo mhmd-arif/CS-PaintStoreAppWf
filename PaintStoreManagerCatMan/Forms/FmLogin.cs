@@ -11,8 +11,6 @@ using PaintStoreManagerCatMan.Service;
 using System.Data.SqlClient;
 using PaintStoreManagerCatMan.Entity;
 
-using System.Windows.Forms;
-
 namespace PaintStoreManagerCatMan.Forms
 {
     

@@ -20,22 +20,33 @@ namespace PaintStoreManagerCatMan.Service
             SqlConnection con = new SqlConnection(connstring);
             string sql = "SELECT * FROM TblCategories";
 
-            con.Open();
-
-            SqlCommand cmd = new SqlCommand(sql, con);
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            try
             {
-                Category newCate = new Category();
+                con.Open();
 
-                newCate.Id = (int)dr["Id"];
-                newCate.CateName = dr["CateName"].ToString();
-                newCate.CateDesc = dr["CateDesc"].ToString();
+                SqlCommand cmd = new SqlCommand(sql, con);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    Category newCate = new Category();
 
-                ListCate.Add(newCate);
+                    newCate.Id = (int)dr["Id"];
+                    newCate.CateName = dr["CateName"].ToString();
+                    newCate.CateDesc = dr["CateDesc"].ToString();
+
+                    ListCate.Add(newCate);
+                }
+
+                return ListCate;
+
+                con.Close();
             }
+            catch (Exception)
+            {
 
-            return ListCate;
+                throw;
+            }
+            
         }
 
         public void Add(string catname, string catdesc)
@@ -43,10 +54,19 @@ namespace PaintStoreManagerCatMan.Service
             SqlConnection con = new SqlConnection(connstring);
             string sql = "insert into TblCategories (Catename, CateDesc) values('" + catname + "','" + catdesc + "')";
 
-            con.Open();
-            SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.ExecuteNonQuery();
-            con.Close();
+            try
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         public void Delete(int id)
@@ -54,28 +74,46 @@ namespace PaintStoreManagerCatMan.Service
             SqlConnection con = new SqlConnection(connstring);
             string sql = "delete from TblCategories where Id = @Id";
 
-            con.Open();
-            SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.Parameters.AddWithValue("@Id", id);
-            cmd.ExecuteNonQuery();
-            
-            con.Close();
+            try
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.ExecuteNonQuery();
+
+                con.Close();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
         }
 
         public void Update(int id, string catname, string catdesc)
         {
             SqlConnection con = new SqlConnection(connstring);
             string sql = "UPDATE TblCategories SET CateName = @CateName, CateDesc = @CateDesc where Id = @Id";
+
+            try
+            {
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@CateName", catname);
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.Parameters.AddWithValue("@CateDesc", catdesc);
+                cmd.ExecuteNonQuery();
+
+                con.Close();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
             
-            con.Open();
-
-            SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.Parameters.AddWithValue("@CateName", catname);
-            cmd.Parameters.AddWithValue("@Id", id);
-            cmd.Parameters.AddWithValue("@CateDesc", catdesc);
-            cmd.ExecuteNonQuery();
-
-            con.Close();
         }
     }
 }

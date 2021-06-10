@@ -21,27 +21,38 @@ namespace PaintStoreManagerCatMan.Service
             SqlConnection con = new SqlConnection(connstring);
             string sql = "SELECT * FROM TblPaints";
 
-            con.Open();
-
-            SqlCommand cmd = new SqlCommand(sql, con);
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            try
             {
-                Paints newPaints = new Paints();
+                con.Open();
 
-                newPaints.Id = (int)dr["Id"];
-                newPaints.Brand = dr["Brand"].ToString();
-                newPaints.Color = dr["Color"].ToString();
-                newPaints.Category = dr["Category"].ToString();
-                newPaints.Size = dr["Size"].ToString();
-                newPaints.Quantity = (int)dr["Quantity"];
-                newPaints.BuyPrice = (double)dr["BuyPrice"];
-                newPaints.SellPrice = (double)dr["SellPrice"];
+                SqlCommand cmd = new SqlCommand(sql, con);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    Paints newPaints = new Paints();
 
-                ListPaints.Add(newPaints);
+                    newPaints.Id = (int)dr["Id"];
+                    newPaints.Brand = dr["Brand"].ToString();
+                    newPaints.Color = dr["Color"].ToString();
+                    newPaints.Category = dr["Category"].ToString();
+                    newPaints.Size = dr["Size"].ToString();
+                    newPaints.Quantity = (int)dr["Quantity"];
+                    newPaints.BuyPrice = (double)dr["BuyPrice"];
+                    newPaints.SellPrice = (double)dr["SellPrice"];
+
+                    ListPaints.Add(newPaints);
+                }
+
+                return ListPaints;
+
+                con.Close();
             }
+            catch (Exception)
+            {
 
-            return ListPaints;
+                throw;
+            }
+            
         }
 
         public void Add(string nama, string color, string ctg, string size, int qty, double bp, double sp)
@@ -49,10 +60,19 @@ namespace PaintStoreManagerCatMan.Service
             SqlConnection con = new SqlConnection(connstring);
             string sql = "insert into TblPaints (Category,Brand,Color,Size,Quantity,BuyPrice,SellPrice) values('" + nama + "','" + color + "','" + ctg + "','" + size + "','" + qty + "','" + bp + "','" + sp + "')";
 
-            con.Open();
-            SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.ExecuteNonQuery();
-            con.Close();
+            try
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         public void Delete(int id)
@@ -60,12 +80,21 @@ namespace PaintStoreManagerCatMan.Service
             SqlConnection con = new SqlConnection(connstring);
             string sql = "delete from Tblpaints where Id = @Id";
 
-            con.Open();
-            SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.Parameters.AddWithValue("@Id", id);
-            cmd.ExecuteNonQuery();
+            try
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.ExecuteNonQuery();
 
-            con.Close();
+                con.Close();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         public void Update(int id, string nama, string color, string ctg, string size, int qty, double bp, double sp)
@@ -73,20 +102,29 @@ namespace PaintStoreManagerCatMan.Service
             SqlConnection con = new SqlConnection(connstring);
             string sql = "UPDATE TblPaints SET Brand = @Brand , Color = @Color,Category = @Category, Size = @Size , Quantity = @Quantity , BuyPrice = @BuyPrice, SellPrice = @SellPrice where Id = @Id";
 
-            con.Open();
+            try
+            {
+                con.Open();
 
-            SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.Parameters.AddWithValue("@Id", id);
-            cmd.Parameters.AddWithValue("@Brand", nama);
-            cmd.Parameters.AddWithValue("@Category", ctg);
-            cmd.Parameters.AddWithValue("@Color", color);
-            cmd.Parameters.AddWithValue("@Size", size);
-            cmd.Parameters.AddWithValue("@Quantity", qty);
-            cmd.Parameters.AddWithValue("@BuyPrice", bp);
-            cmd.Parameters.AddWithValue("@SellPrice", sp);
-            cmd.ExecuteNonQuery();
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.Parameters.AddWithValue("@Brand", nama);
+                cmd.Parameters.AddWithValue("@Category", ctg);
+                cmd.Parameters.AddWithValue("@Color", color);
+                cmd.Parameters.AddWithValue("@Size", size);
+                cmd.Parameters.AddWithValue("@Quantity", qty);
+                cmd.Parameters.AddWithValue("@BuyPrice", bp);
+                cmd.Parameters.AddWithValue("@SellPrice", sp);
+                cmd.ExecuteNonQuery();
 
-            con.Close();
+                con.Close();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         

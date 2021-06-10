@@ -30,13 +30,31 @@ namespace PaintStoreManagerCatMan.Forms
 
         private void Btn_Add_Click(object sender, EventArgs e)
         {
-            if (TB_Brand.ToString() == "" || Tb_Color.ToString() == ""|| TB_Size.ToString() == "" || TB_Quantity.ToString() == "" || TB_BuyPrice.ToString() == "" || TB_SellPrice.ToString() == "" || CB_CatePaint.SelectedIndex < 0)
+            if (TB_Brand.Text == "" || Tb_Color.Text == ""|| TB_Size.Text == "" || TB_Quantity.Text == "" || TB_BuyPrice.Text == "" || TB_SellPrice.Text == "" || CB_CatePaint.SelectedIndex < 0)
             {
-                newItems.Add(CB_CatePaint.Text, TB_Brand.Text, Tb_Color.Text, TB_Size.Text, int.Parse(TB_Quantity.Text), double.Parse(TB_BuyPrice.Text), double.Parse(TB_SellPrice.Text));
+                try
+                {
+                    newItems.Add(CB_CatePaint.Text, TB_Brand.Text, Tb_Color.Text, TB_Size.Text, int.Parse(TB_Quantity.Text), double.Parse(TB_BuyPrice.Text), double.Parse(TB_SellPrice.Text));
+                }
+                catch (Exception)
+                {
+
+                    MessageBox.Show("Failed to convert value, try again");
+                }
+                
             }
             else
             {
-                newItems.Add(CB_CatePaint.Text, TB_Brand.Text, Tb_Color.Text, TB_Size.Text, int.Parse(TB_Quantity.Text), double.Parse(TB_BuyPrice.Text), double.Parse(TB_SellPrice.Text));
+                try
+                {
+                    newItems.Add(CB_CatePaint.Text, TB_Brand.Text, Tb_Color.Text, TB_Size.Text, int.Parse(TB_Quantity.Text), double.Parse(TB_BuyPrice.Text), double.Parse(TB_SellPrice.Text));
+                }
+                catch (Exception)
+                {
+
+                    MessageBox.Show("Failed to convert value, try again");
+                }
+                
             }
 
             UpdateDgv();
@@ -46,14 +64,23 @@ namespace PaintStoreManagerCatMan.Forms
         {
             int id = GetId();
 
-            if (TB_Brand.ToString() == "" || Tb_Color.ToString() == "" || TB_Size.ToString() == "" || TB_Quantity.ToString() == "" || TB_BuyPrice.ToString() == "" || TB_SellPrice.ToString() == "" || CB_CatePaint.SelectedIndex < 0)
+            if (TB_Brand.Text == "" || Tb_Color.Text == "" || TB_Size.Text == "" || TB_Quantity.Text == "" || TB_BuyPrice.Text == "" || TB_SellPrice.Text == "" || CB_CatePaint.SelectedIndex < 0)
             {
                 MessageBox.Show("Missing Information");
             }
 
             else
             {
-                newItems.Update(id, TB_Brand.Text, Tb_Color.Text, CB_CatePaint.Text, TB_Size.Text, int.Parse(TB_Quantity.Text), double.Parse(TB_BuyPrice.Text), double.Parse(TB_SellPrice.Text));
+                try
+                {
+                    newItems.Update(id, TB_Brand.Text, Tb_Color.Text, CB_CatePaint.Text, TB_Size.Text, int.Parse(TB_Quantity.Text), double.Parse(TB_BuyPrice.Text), double.Parse(TB_SellPrice.Text));
+                }
+                catch (Exception)
+                {
+
+                    MessageBox.Show("Failed to convert value, try again");
+                }
+                
                 
             }
 
@@ -62,9 +89,16 @@ namespace PaintStoreManagerCatMan.Forms
 
         private void Btn_Delete_Click(object sender, EventArgs e)
         {
-            int id = int.Parse(DGV_Paint.CurrentRow.Cells[0].Value.ToString());
-            newItems.Delete(id);
-
+            try
+            {
+                int id = int.Parse(DGV_Paint.CurrentRow.Cells[0].Value.ToString());
+                newItems.Delete(id);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to convert value, try again");
+            }
+            
             UpdateDgv();
         }
 
@@ -75,7 +109,7 @@ namespace PaintStoreManagerCatMan.Forms
 
         private int GetId()
         {
-            return int.Parse(DGV_Paint.CurrentRow.Cells[0].Value.ToString());
+            return int.Parse(DGV_Paint.CurrentRow.Cells[0].Value.ToString());  
         }
         private void ClearAll()
         {
@@ -100,18 +134,27 @@ namespace PaintStoreManagerCatMan.Forms
             SqlConnection con = new SqlConnection(connstring);
             string sql = "SELECT CateName, Id FROM TblCategories";
 
-            con.Open();
-
-            SqlCommand cmd = new SqlCommand(sql, con);
-            SqlDataReader dr;
-            dr = cmd.ExecuteReader();
-            while (dr.Read())
+            try
             {
-                CB_CatePaint.Items.Add(dr["CateName"].ToString());
-                CB_CatePaint.DisplayMember = dr["CateName"].ToString();
-                CB_CatePaint.ValueMember = dr["Id"].ToString();
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, con);
+                SqlDataReader dr;
+                dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    CB_CatePaint.Items.Add(dr["CateName"].ToString());
+                    CB_CatePaint.DisplayMember = dr["CateName"].ToString();
+                    CB_CatePaint.ValueMember = dr["Id"].ToString();
+                }
+                con.Close();
             }
-            con.Close();
+            catch (Exception)
+            {
+                MessageBox.Show("Connection to database failed");
+
+            }
+           
         }
 
         private void TB_SearchPaint_TextChange(object sender, EventArgs e)
@@ -125,14 +168,23 @@ namespace PaintStoreManagerCatMan.Forms
                 SqlConnection con = new SqlConnection(connstring);
                 string sqlQuery = "SELECT * FROM TblPaints where Brand = '" + TB_SearchPaint.Text + "' ";
 
-                con.Open();
-                SqlCommand cmd = new SqlCommand(sqlQuery, con);
-                SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
+                try
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
 
-                sda.Fill(dt);
-                DGV_Paint.DataSource = dt;
-                con.Close();
+                    sda.Fill(dt);
+                    DGV_Paint.DataSource = dt;
+                    con.Close();
+                }
+                catch (Exception)
+                {
+
+                    MessageBox.Show("Connection to database failed");
+                }
+                
             }
         }
 

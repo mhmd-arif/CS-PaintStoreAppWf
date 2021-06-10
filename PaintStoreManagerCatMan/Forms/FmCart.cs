@@ -21,7 +21,6 @@ namespace PaintStoreManagerCatMan.Forms
         readonly private ReportsSvs newReport = new ReportsSvs();
 
         double totalTrans = 0;
-        double BuyerMoney;
 
         public FmCart()
         {
@@ -30,33 +29,44 @@ namespace PaintStoreManagerCatMan.Forms
 
         private void Btn_Pay_Click(object sender, EventArgs e)
         {
-            double buyerMoney = double.Parse(Tb_CustomerCash.Text);
-            double totalCost = double.Parse(Lbl_Total.Text);
-            double change = buyerMoney - totalCost;
-            if (TB_CustomerName.ToString() == "" || Tb_CustomerCash.ToString() == "" )
+            
+            if (TB_CustomerName.Text == "" || Tb_CustomerCash.Text == "" )
             {
                 MessageBox.Show("Missing Information, please fill required data");
             }
             else
             {
-                if (BuyerMoney < 0)
+                try
                 {
-                    MessageBox.Show("input incorrect, please try again");
-                }
-                else
-                {
-                    if (buyerMoney < totalCost)
+                    double buyerMoney = double.Parse(Tb_CustomerCash.Text);
+                    double totalCost = double.Parse(Lbl_Total.Text);
+                    double change = buyerMoney - totalCost;
+
+                    if (buyerMoney < 0)
                     {
-                        MessageBox.Show("Not Enough Money !, please try again");
+                        MessageBox.Show("input incorrect, please try again");
                     }
                     else
                     {
-                        string date = DateTime.Now.ToString();
-                        newReport.Add(TB_CustomerName.Text, "CASHIER", buyerMoney, totalCost, change, date);
-                        MessageBox.Show("Transaction Success");
-                    }
+                        if (buyerMoney < totalCost)
+                        {
+                            MessageBox.Show("Not Enough Money !, please try again");
+                        }
+                        else
+                        {
+                            string date = DateTime.Now.ToString();
+                            newReport.Add(TB_CustomerName.Text, "CASHIER", buyerMoney, totalCost, change, date);
+                            MessageBox.Show("Transaction Success");
+                        }
 
+                    }
                 }
+                catch (Exception )
+                {
+
+                    MessageBox.Show("Enter all the required data correctly");
+                }
+                
             }
             UpdateDgv();
         }
@@ -76,18 +86,27 @@ namespace PaintStoreManagerCatMan.Forms
             
             SqlConnection con = new SqlConnection(connstring);
 
-            con.Open();
-            SqlCommand cmd = new SqlCommand(sql, con);
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            try
             {
-                _Brand = dr[1].ToString();
-                _Color = dr[2].ToString();
-                _category = dr[3].ToString();
-                _size = dr[4].ToString();
-                _Price = double.Parse(dr[7].ToString());
+                con.Open();
+                SqlCommand cmd = new SqlCommand(sql, con);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    _Brand = dr[1].ToString();
+                    _Color = dr[2].ToString();
+                    _category = dr[3].ToString();
+                    _size = dr[4].ToString();
+                    _Price = double.Parse(dr[7].ToString());
+                }
+                con.Close();
             }
-            con.Close();
+            catch (Exception)
+            {
+
+                MessageBox.Show("Connection to database failed");
+            }
+            
             
             newCart.Add(_Brand, _Color,_category, _size, _Price);
 
@@ -101,18 +120,27 @@ namespace PaintStoreManagerCatMan.Forms
             SqlConnection con = new SqlConnection(connstring);
             string sql = "SELECT CateName, Id FROM TblCategories";
 
-            con.Open();
-
-            SqlCommand cmd = new SqlCommand(sql, con);
-            SqlDataReader dr;
-            dr = cmd.ExecuteReader();
-            while (dr.Read())
+            try
             {
-                CB_CateCart.Items.Add(dr["CateName"].ToString());
-                CB_CateCart.DisplayMember = dr["CateName"].ToString();
-                CB_CateCart.ValueMember = dr["Id"].ToString();
+                con.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, con);
+                SqlDataReader dr;
+                dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    CB_CateCart.Items.Add(dr["CateName"].ToString());
+                    CB_CateCart.DisplayMember = dr["CateName"].ToString();
+                    CB_CateCart.ValueMember = dr["Id"].ToString();
+                }
+                con.Close();
             }
-            con.Close();
+            catch (Exception)
+            {
+
+                MessageBox.Show("Connection to database failed");
+            }
+            
         }
 
         private void FmCart_Load(object sender, EventArgs e)
@@ -160,29 +188,40 @@ namespace PaintStoreManagerCatMan.Forms
 
                 SqlConnection con = new SqlConnection(connstring);
                 string sql = "SELECT * FROM TblPaints where Category = '" + CB_CateCart.Text + "'";
-
-                con.Open();
-
-                SqlCommand cmd = new SqlCommand(sql, con);
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
+                
+                try
                 {
-                    Paints newPaints = new Paints();
+                    con.Open();
 
-                    newPaints.Id = (int)dr["Id"];
-                    newPaints.Brand = dr["Brand"].ToString();
-                    newPaints.Color = dr["Color"].ToString();
-                    newPaints.Category = dr["Category"].ToString();
-                    newPaints.Size = dr["Size"].ToString();
-                    newPaints.Quantity = (int)dr["Quantity"];
-                    newPaints.BuyPrice = (double)dr["BuyPrice"];
-                    newPaints.SellPrice = (double)dr["SellPrice"];
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    while (dr.Read())
+                    {
+                        Paints newPaints = new Paints();
 
-                    ListPaints.Add(newPaints);
+                        newPaints.Id = (int)dr["Id"];
+                        newPaints.Brand = dr["Brand"].ToString();
+                        newPaints.Color = dr["Color"].ToString();
+                        newPaints.Category = dr["Category"].ToString();
+                        newPaints.Size = dr["Size"].ToString();
+                        newPaints.Quantity = (int)dr["Quantity"];
+                        newPaints.BuyPrice = (double)dr["BuyPrice"];
+                        newPaints.SellPrice = (double)dr["SellPrice"];
+
+                        ListPaints.Add(newPaints);
+                    }
+
+                    List<Paints> dgv = ListPaints;
+                    DGV_PaintCart.DataSource = dgv;
+
+                    con.Close();
                 }
+                catch (Exception)
+                {
 
-                List<Paints> dgv = ListPaints;
-                DGV_PaintCart.DataSource = dgv;
+                    MessageBox.Show("Connection to database failed");
+                }
+                
             }
 
         }
@@ -220,14 +259,23 @@ namespace PaintStoreManagerCatMan.Forms
                 SqlConnection con = new SqlConnection(connstring);
                 string sqlQuery = "SELECT * FROM TblPaints where Brand = '" + TB_SearchByBrand.Text + "' ";
 
-                con.Open();
-                SqlCommand cmd = new SqlCommand(sqlQuery, con);
-                SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
+                try
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
 
-                sda.Fill(dt);
-                DGV_PaintCart.DataSource = dt;
-                con.Close();
+                    sda.Fill(dt);
+                    DGV_PaintCart.DataSource = dt;
+                    con.Close();
+                }
+                catch (Exception)
+                {
+
+                    MessageBox.Show("Connection to database failed");
+                }
+                
             }
            
         }
@@ -244,14 +292,23 @@ namespace PaintStoreManagerCatMan.Forms
                 SqlConnection con = new SqlConnection(connstring);
                 string sqlQuery = "SELECT * FROM TblPaints where Color = '" + TB_SearchByColor.Text + "' ";
 
-                con.Open();
-                SqlCommand cmd = new SqlCommand(sqlQuery, con);
-                SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
+                try
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
 
-                sda.Fill(dt);
-                DGV_PaintCart.DataSource = dt;
-                con.Close();
+                    sda.Fill(dt);
+                    DGV_PaintCart.DataSource = dt;
+                    con.Close();
+                }
+                catch (Exception)
+                {
+
+                    MessageBox.Show("Connection to database failed");
+                }
+                
             }
             
         }

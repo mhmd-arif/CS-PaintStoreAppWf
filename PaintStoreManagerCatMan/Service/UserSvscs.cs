@@ -21,24 +21,34 @@ namespace PaintStoreManagerCatMan.Service
             SqlConnection con = new SqlConnection(connstring);
             string sql = "SELECT * FROM TblUsers";
 
-            con.Open();
-
-            SqlCommand cmd = new SqlCommand(sql, con);
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            try
             {
-                User newUser = new User();
+                con.Open();
 
-                newUser.Id = (int)dr["Id"];
-                newUser.Name = dr["Name"].ToString();
-                newUser.Username = dr["Username"].ToString();
-                newUser.Password = dr["Password"].ToString();
-                newUser.Level = dr["Level"].ToString();
+                SqlCommand cmd = new SqlCommand(sql, con);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    User newUser = new User();
 
-                ListUser.Add(newUser);
+                    newUser.Id = (int)dr["Id"];
+                    newUser.Name = dr["Name"].ToString();
+                    newUser.Username = dr["Username"].ToString();
+                    newUser.Password = dr["Password"].ToString();
+                    newUser.Level = dr["Level"].ToString();
+
+                    ListUser.Add(newUser);
+                }
+
+                return ListUser;
+                con.Close();
             }
+            catch (Exception)
+            {
 
-            return ListUser;
+                throw;
+            }
+            
         }
 
         public void Add(string name, string username, string pass, string level)
@@ -46,10 +56,19 @@ namespace PaintStoreManagerCatMan.Service
             SqlConnection con = new SqlConnection(connstring);
             string sql = "insert into TblUsers (Name, Username, Password, Level ) values('" + name + "','" + username + "','" + pass + "','" + level + " ')";
 
-            con.Open();
-            SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.ExecuteNonQuery();
-            con.Close();
+            try
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         public void Delete(int id)
@@ -57,12 +76,21 @@ namespace PaintStoreManagerCatMan.Service
             SqlConnection con = new SqlConnection(connstring);
             string sql = "delete from TblUsers where Id = @Id";
 
-            con.Open();
-            SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.Parameters.AddWithValue("@Id", id);
-            cmd.ExecuteNonQuery();
+            try
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.ExecuteNonQuery();
 
-            con.Close();
+                con.Close();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
 
@@ -71,17 +99,26 @@ namespace PaintStoreManagerCatMan.Service
             SqlConnection con = new SqlConnection(connstring);
             string sql = "UPDATE TblUsers SET Name = @Name , Username = @Username, Password = @Password, Level = @Level where Id = @Id";
 
-            con.Open();
+            try
+            {
+                con.Open();
 
-            SqlCommand cmd = new SqlCommand(sql, con);
-            cmd.Parameters.AddWithValue("@Id", id);
-            cmd.Parameters.AddWithValue("@Name", name);
-            cmd.Parameters.AddWithValue("@Username", username);
-            cmd.Parameters.AddWithValue("@Password", pass);
-            cmd.Parameters.AddWithValue("@Level", level);
-            cmd.ExecuteNonQuery();
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.Parameters.AddWithValue("@Name", name);
+                cmd.Parameters.AddWithValue("@Username", username);
+                cmd.Parameters.AddWithValue("@Password", pass);
+                cmd.Parameters.AddWithValue("@Level", level);
+                cmd.ExecuteNonQuery();
 
-            con.Close();
+                con.Close();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
 
