@@ -12,7 +12,7 @@ namespace PaintStoreManagerCatMan.Service
 
         List<Carts> GetAllCarts();
         void Add(string nama, string color, string ctg, string size, double sp);
-        void Update(int id, string nama, string color, string ctg, int qty, double sp);
+        void Update(int id, string nama, string color, string ctg, int size, double sp);
         void Delete(int id);
     }
 }

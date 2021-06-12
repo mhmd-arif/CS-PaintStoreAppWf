@@ -94,7 +94,7 @@ namespace PaintStoreManagerCatMan.Service
             
         }
 
-        public void Update(int id, string nama, string color, string ctg, int qty, double bp)
+        public void Update(int id, string nama, string color, string ctg, int size, double bp)
         {
             SqlConnection con = new SqlConnection(connstring);
             string sql = "UPDATE TblCarts SET Brand = @Brand , Color = @Color,Category = @Category, Size = @Size, SellPrice = @SellPrice where Id = @Id";
@@ -108,7 +108,7 @@ namespace PaintStoreManagerCatMan.Service
                 cmd.Parameters.AddWithValue("@Brand", nama);
                 cmd.Parameters.AddWithValue("@Category", ctg);
                 cmd.Parameters.AddWithValue("@Color", color);
-                cmd.Parameters.AddWithValue("@Quantity", qty);
+                cmd.Parameters.AddWithValue("@Size", size);
                 cmd.Parameters.AddWithValue("@SellPrice", bp);
                 cmd.ExecuteNonQuery();
 
