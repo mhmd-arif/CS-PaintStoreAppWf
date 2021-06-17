@@ -65,9 +65,10 @@ namespace PaintStoreManagerCatMan.Service
 
                     Listreports.Add(newreports);
                 }
+                con.Close();
 
                 return Listreports;
-                con.Close();
+                
             }
             catch (Exception)
             {

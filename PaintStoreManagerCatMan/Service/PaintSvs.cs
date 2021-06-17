@@ -42,10 +42,10 @@ namespace PaintStoreManagerCatMan.Service
 
                     ListPaints.Add(newPaints);
                 }
+                con.Close();
 
                 return ListPaints;
-
-                con.Close();
+                
             }
             catch (Exception)
             {

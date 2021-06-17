@@ -39,9 +39,10 @@ namespace PaintStoreManagerCatMan.Service
 
                     ListUser.Add(newUser);
                 }
+                con.Close();
 
                 return ListUser;
-                con.Close();
+                
             }
             catch (Exception)
             {
