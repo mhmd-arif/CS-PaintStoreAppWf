@@ -26,6 +26,7 @@ namespace PaintStoreManagerCatMan.Entity
         public User(int id,string name, string user, string pass, string level)
         {
             Id = id;
+            Name = name;
             Username = user;
             Password = pass;
             Level = level;

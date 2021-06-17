@@ -36,10 +36,10 @@ namespace PaintStoreManagerCatMan.Service
 
                     ListCate.Add(newCate);
                 }
+                con.Close();
 
                 return ListCate;
 
-                con.Close();
             }
             catch (Exception)
             {
